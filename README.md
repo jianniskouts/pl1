@@ -1,13 +1,14 @@
-Welcome to SourceLair.
-
-Read these 4 steps to make SourceLair your daily productive tool:
-
-1. Customize your editor from the gear icon on the top right corner of the editor ->
-
-2. Don't forget to put the appropriate extension to your files (i.e. my-file.py, my-file.c)
-
-3. Check out our introductory guides: https://www.sourcelair.com/guides
-
-4. If you have any thoughts, issues or proposals for SourceLair, it will be great to send us at support@sourcelair.com
-
-Happy coding in your browser!
+1. Seperate the input number into digits and place them into an array
+2. Find the size of the input number
+3. Check individualy each digit and compare the first with the last each time.
+    3.1. if first == last digit => I am looking for numbers with the same size as the input
+        3.1.1 Pick any combination of numbers that can create the last digit (with no carry??)
+    3.2. if first-1 == last digit() ,I just have a carry from the second MSB => I am looking for numbers with the same size as the input
+        3.2.1 Pick any combination of numbers that can create the last digit (with no carry??)
+    3.3. if inputs[first]*10 + inputs[second]  = inputs[last] + 10 => I am looking for numbers with the size one less than the input.
+    3.4.
+    
+    //in cases 3 and 4 if I have carries need to make -1 the remaining number
+    //also in cases 3 and 4 , need to make: first two digits - the last number
+    //we need to check if it is (1 or 2) or (3 or 4) to search for a n-digit or (n-1)-digit number
+4. After we take a decision about the number we exclude the checked digits and go on with the rest recursively.
