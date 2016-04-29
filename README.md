@@ -16,3 +16,4 @@
 
 
 //keep in mind the possibiity to go through the array, while it is non zero the digits instead of changing the start and the end of the recirsive call
+//need to pick the correct add if there is only one spot left() eg: 181, when we check 8, need to take ONLY 4+4
