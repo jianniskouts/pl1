@@ -88,18 +88,18 @@ int SizeOfInt(int);
 int ReverseInt(int);
 int *DigitsInArray(int);
 
-int *FindParentNumbers(int* ,int ,int ,int );
-int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can make BitInput global and I dont need to pass it as argument
+void FindParentNumbers(int* ,int ,int ,int );
+void FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can make BitInput global and I dont need to pass it as argument
                                                    //another global I need is the newNum, so it is always updated
     if (start > end){
-        return newNum; ///TODO, when and how I need this
+        return; ///TODO, when and how I need this
     }
-    newNum = malloc(10*sizeof(int)) ;
+    //newNum = malloc(10*sizeof(int)) ;
     int new_size;
         printf("digit to test: %d\n",BitInput[end]);
         printf("start: %d\n",start);
         printf("end: %d\n",end);
-    printf("%d\n",*(Numbers[BitInput[end]]+1));
+    printf("%d\n",*(Numbers[BitInput[end]] + 1));
     if(BitInput[start] == BitInput[end]){
         printf("newNum: %d\n", newNum[1]);
         printf("first case \n");
@@ -124,14 +124,14 @@ int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
             newNum[start] = temp;
             printf("newNumasd, start: %d, %d\n",newNum[start],start);
             temp = *(pointerToInt+1);
-            printf("thsi should be: %d\n",*(Numbers[BitInput[end]]+1));
+            //printf("this should be: %d\n",*(Numbers[BitInput[end]]+1));
             newNum[end] = temp;
             printf("newNumasd, end: %d, %d\n",newNum[end],end);
         }
         start++;
         end--;
         printf("newNum: %d\n", newNum[0]);
-        newNum = FindParentNumbers(newNum,new_size,start,end);
+        FindParentNumbers(newNum,new_size,start,end);
     }else if(BitInput[start]-1 == BitInput[end]){ //have to add somehow the fact that I w8 for Carry
         printf("2nd case\n");
         new_size = size;
@@ -142,7 +142,7 @@ int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
         BitInput[start] = BitInput[start] - 1;
         start++;
         end--;
-        newNum = FindParentNumbers(newNum,new_size,start,end);
+        FindParentNumbers(newNum,new_size,start,end);
     }else if((BitInput[start]*10 + BitInput[start+1]) == (BitInput[end] + 10)){
         printf("3rd case\n");
         new_size = size - 1;
@@ -156,7 +156,7 @@ int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
         start++;
         end--;
         //p = newNum;
-        p = FindParentNumbers(newNum,new_size,start,end);
+        FindParentNumbers(newNum,new_size,start,end);
     }
     else{
         printf("4th case\n");
@@ -175,7 +175,7 @@ int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
         }
 
         end--;
-        newNum = FindParentNumbers(newNum,new_size,start,end);
+        FindParentNumbers(newNum,new_size,start,end);
     }
     printf("another test\n");
     printf("newNum: %d\n", newNum[1]);
@@ -184,7 +184,7 @@ int *FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
     //for(i = 0; i < 3; i++){
     //    printf("final: %d\n",p[i]);
     //}
-    return newNum;
+    return;
 }
 
 //reverse an int

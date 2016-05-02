@@ -22,10 +22,10 @@ int main(int argc,char* argv[]){
     for(i = 0;i< size;i++){
         printf("BitInput: %d\n",BitInput[i]);
     }
-    p = FindParentNumbers(final,size,start,end);
+    FindParentNumbers(newNum,size,start,end);
     printf("final: ");
     for(i = 0;i< size;i++){
-        printf("%d",p[i]);
+        printf("%d",newNum[i]);
     }
     printf("\n");
     /*for(i = 0; i < input; i++){
