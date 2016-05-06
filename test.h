@@ -83,6 +83,7 @@ int *BitInput;
 int newNum[100000];
 int *p;
 int *pointerToInt;
+int Carry = 0 ;
 
 int SizeOfInt(int);
 int ReverseInt(int);
@@ -107,7 +108,7 @@ void FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
         pointerToInt = (Numbers[BitInput[end]]);
         printf("pointerToInt: %d = %d\n",*(pointerToInt + 0),*(pointerToInt + 1));
         if (end == start){
-            while((*(pointerToInt + 0 ) != *(pointerToInt + 1)) || (*(pointerToInt + 2) != 0)){
+            while((*(pointerToInt + 0 ) != *(pointerToInt + 1)) || (*(pointerToInt + 2) != Carry)){
                 //printf("Inside: %d = %d\n",*(pointerToInt + 0),*(pointerToInt + 1));
                 pointerToInt = pointerToInt + 3;
             }
@@ -115,7 +116,8 @@ void FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
             newNum[start] = temp;
             printf("newNumasd, start: %d, %d\n",newNum[start],start);
         } else{
-            while(*(pointerToInt + 2) != 0 ){
+            Carry = 0;
+            while(*(pointerToInt + 2) != Carry ){
                 //printf("pointer: %d\n",*(pointerToInt + 2));
                 pointerToInt = pointerToInt + 3;
             }
@@ -133,15 +135,37 @@ void FindParentNumbers(int *newNum,int size,int start,int end){ //maybe I can ma
         printf("newNum: %d\n", newNum[0]);
         FindParentNumbers(newNum,new_size,start,end);
     }else if(BitInput[start]-1 == BitInput[end]){ //have to add somehow the fact that I w8 for Carry
-        printf("2nd case\n");
+        printf("newNum: %d\n", newNum[1]);
+        printf("first case \n");
         new_size = size;
-        temp = *(Numbers[BitInput[end]]);
-        newNum[start] = temp;
-        temp = *(Numbers[BitInput[end]]+1);
-        newNum[end] = temp;
-        BitInput[start] = BitInput[start] - 1;
+        pointerToInt = (Numbers[BitInput[end]]);
+        printf("pointerToInt: %d = %d\n",*(pointerToInt + 0),*(pointerToInt + 1));
+        if (end == start){
+            while((*(pointerToInt + 2) != Carry)){
+                printf("Inside: %d = %d\n",*(pointerToInt + 0),*(pointerToInt + 1));
+                pointerToInt = pointerToInt + 3;
+            }
+            temp = *pointerToInt;
+            newNum[start] = temp;
+            printf("newNumasd, start//: %d, %d\n",newNum[start],start);
+        } else{
+            Carry = 1;
+            while(*(pointerToInt + 2) != !Carry){
+                //printf("pointer: %d\n",*(pointerToInt + 2));
+                pointerToInt = pointerToInt + 3;
+            }
+            printf("wtf pointer: %d\n",*(pointerToInt));
+            temp = (*pointerToInt);
+            newNum[start] = temp;
+            printf("newNumasd, start: %d, %d\n",newNum[start],start);
+            temp = *(pointerToInt+1);
+            //printf("this should be: %d\n",*(Numbers[BitInput[end]]+1));
+            newNum[end] = temp;
+            printf("newNumasd, end: %d, %d\n",newNum[end],end);
+        }
         start++;
         end--;
+        printf("newNum: %d\n", newNum[0]);
         FindParentNumbers(newNum,new_size,start,end);
     }else if((BitInput[start]*10 + BitInput[start+1]) == (BitInput[end] + 10)){
         printf("3rd case\n");

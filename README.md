@@ -21,4 +21,20 @@
 
 
 
-Issues with how I pass and read the newNum array and its pointer
+if start < end
+    if[start] = [end]
+    elseif [start] + 1 = [end]
+    elseif [start]*10 + [start+1] == [end] + 10
+        GOTO [start + 1] and find something with Carry to create the num
+        Carry = 1
+        [end-1] - 1 to check afterwards
+    elseif [start]*10 + 1 == [end] + 10
+        GOTO [start + 1] and find something with Carry to create the num
+        Carry = 1
+        [end-1] - 1 to check afterwards
+        [start+2] should ne with Carry
+else if start == end
+    only on e digit and either you have a Carry from the rest of the number or not
+    if it is an odd number, no solution, elseif even we have solution
+else start > end
+    return
