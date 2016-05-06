@@ -16,8 +16,7 @@ int main(int argc,char* argv[]){
     //int input;
     printf("yolo\n");
     for(i = 0; i < 100000; i++){
-        c = argv[1][i] - '0';
-        printf("%c\n",c);
+        printf("%d\n",argv[1][i]-'0');
     }
     size = i;
     //size = SizeOfInt(input);
