@@ -13,28 +13,49 @@ int seven[2][2] = {{7,0},{9,8}};
 int eight[3][2] = {{8,0},{9,9},{4,4}};
 int nine[1][2] = {{9,0}};
 
-int **Numbers[]= {(int**)zero,(int**)one,(int**)two,(int**)three,(int**)four,(int**)five,(int**)six,(int**)seven,(int**)eight,(int**)nine};
+int *Numbers[]= {(int*)zero,(int*)one,(int*)two,(int*)three,(int*)four,(int*)five,(int*)six,(int*)seven,(int*)eight,(int*)nine};
 int SizeOfInt(int);
 int ReverseInt(int);
 int *DigitsInArray(int);
-void FindParentNumbers(int ,int ,int );
+void FindParentNumbers(int ,int ,int);
 
 int start,end,new_size;
-int newNum[100000],inputs[100000];
-int **pointerToInt,*bitInput;
+int newNum[100001],inputs[100000];
+int *pointerToInt,bitInput[100000];
 int carry = 0;
 int flag = 0;
 
 int main(int argc,char* argv[]){
-    int input, start, end, size,i,n;
+    newNum[100000] = 0;
+    int start = 0;
+    int end = 0;
+    int size = 0;
+    int i = 0;
+    int n;
+    int c;
+    FILE *fd;
+    fd = fopen(argv[1], "r");
+    if(fd == NULL){
+        printf("didn't open the file\n");
+        exit(1);
+    }
+    while ((c = fgetc(fd)) != EOF){
+        bitInput[i] = 0;
+        newNum[i] = 0;
+        bitInput[i] = c - '0';
+        i++;
+    }
 
-    input = atoi(argv[1]);
-    size = SizeOfInt(input);
+    size = i-1;
     start = 0;
     end = size-1;
-    bitInput = DigitsInArray(input);
+    flag = 2;
     FindParentNumbers(size,start,end);
-    if(new_size <size){
+    if(newNum[100000] == -1){
+        flag = 0;
+        FindParentNumbers(size,start,end);
+    }
+    if(new_size < size){
         n = 1;
     }
     else{
@@ -48,48 +69,74 @@ int main(int argc,char* argv[]){
 
 
 void FindParentNumbers(int size,int start,int end){
-    pointerToInt = Numbers[bitInput[end]];
+     pointerToInt = Numbers[bitInput[end]];
+    new_size = size;
     if(start < end){
-        flag++; //seperate first and the rest recersive calls of the function
-        //pointerToInt = Numbers[bitInput[end]];
-
-        if (flag == 1){ //TODO if I am on either of these cases need to make the [end -1] -1 to keep track of the carry 
+        flag++;
+        if (flag == 1){
             if((bitInput[start]*10 + bitInput[start+1] -1) == bitInput[end]+10){
                 new_size = size - 1;
                 start++;
-                newNum[start] = **(pointerToInt + 2);
-                newNum[end] = **(pointerToInt + 3);
+                newNum[start] = *(pointerToInt + 2);
+                newNum[end] = *(pointerToInt + 3);
                 bitInput[end - 1]--;
                 carry = 1;
                 start++;
                 end--;
                 FindParentNumbers(new_size,start,end);
                 return;
-            }
-            else if((bitInput[start]*10 + bitInput[start+1]) == bitInput[end]+10){
+            }else if((bitInput[start]*10 + bitInput[start+1]) == bitInput[end]+10){
                 new_size = size - 1;
                 start++;
-                newNum[start] = **(pointerToInt + 2) ;
-                newNum[end] = **(pointerToInt + 3);
-                bitInput[end-1]--;
+                newNum[start] = *(pointerToInt + 2) ;
+                newNum[end] = *(pointerToInt + 3);
+                carry = 0;
+                if(bitInput[end-1] == 0){
+                    bitInput[end-1] = 9;
+                }else{
+                    bitInput[end-1]--;
+                };
                 start++;
                 end--;
                 FindParentNumbers(new_size,start,end);
                 return;
-            }
-            else{
+            }else if(((bitInput[start]*10 - 1) + bitInput[start+1]) == bitInput[end]){
+                new_size = size - 1;
+                start++;
+                newNum[start] = *(pointerToInt + 0) ;
+                newNum[end] = *(pointerToInt + 1);
+                carry = 0;
+                start++;
+                end--;
+                FindParentNumbers(new_size,start,end);
+                return;
+            }else{
                 new_size = size;
             }
         }
-        if(bitInput[start]-1 == bitInput[end]){
+        if((bitInput[start]-1 == bitInput[end]) || (bitInput[start] == 0)){
             if(carry == 1){
-                newNum[start] = **(pointerToInt + 2); // if Ihave a carry then i get the second tuple
-                newNum[end] = **(pointerToInt + 3); // TODO need to find how to point to the array of arrays
-                bitInput[end-1]--;
+                if(bitInput[end] == 9){
+                    newNum[start] = *(pointerToInt + 0); // if Ihave a carry then i get the second tuple
+                    newNum[end] = *(pointerToInt + 1); // TODO need to find how to point to the array of arrays
+                    if(bitInput[end-1] == 0){
+                        bitInput[end-1] = 9;
+                    }else{
+                        bitInput[end-1]--;
+                    };
+                }else{
+                    newNum[start] = *(pointerToInt + 2); // if Ihave a carry then i get the second tuple
+                    newNum[end] = *(pointerToInt + 3); // TODO need to find how to point to the array of arrays
+                    if(bitInput[end-1] == 0){
+                        bitInput[end-1] = 9;
+                    }else{
+                        bitInput[end-1]--;
+                    };
+                }
             }
             if (carry == 0){
-                newNum[start] = **pointerToInt;    // if I dont have a carry then i get the first tuple
-                newNum[end] = **(pointerToInt + 1); // TODO need to find how to point to the array of arrays
+                newNum[start] = *pointerToInt;    // if I dont have a carry then i get the first tuple
+                newNum[end] = *(pointerToInt + 1); // TODO need to find how to point to the array of arrays
             }
             carry = 1;
             start++;
@@ -98,13 +145,28 @@ void FindParentNumbers(int size,int start,int end){
             return;
         }
         else if(bitInput[start] == bitInput[end]){
-            if(carry == 1){
-                newNum[start] = **(pointerToInt + 2); // if Ihave a carry then i get the second tuple
-                newNum[end] = **(pointerToInt + 3); // TODO need to find how to point to the array of arrays
-            }
             if (carry == 0){
-                newNum[start] = **pointerToInt;    // if I dont have a carry then i get the first tuple
-                newNum[end] = **(pointerToInt + 1); // TODO need to find how to point to the array of arrays
+                newNum[start] = *pointerToInt;    // if I dont have a carry then i get the first tuple
+                newNum[end] = *(pointerToInt + 1); // TODO need to find how to point to the array of arrays
+                carry =0;
+            }
+            if(carry == 1){
+                if(bitInput[end] == 9){
+                    newNum[start] = *(pointerToInt + 0); // if Ihave a carry then i get the second tuple
+                    newNum[end] = *(pointerToInt + 1); // TODO need to find how to point to the array of arrays
+                    carry = 1;
+                }else{
+                    newNum[start] = *(pointerToInt + 2); // if Ihave a carry then i get the second tuple
+                    newNum[end] = *(pointerToInt + 3); // TODO need to find how to point to the array of arrays
+                    carry =0;
+                }
+                if(bitInput[end-1] == 0){
+                    bitInput[end-1] = 9;
+                    carry = 1;
+                }else{
+                    bitInput[end-1]--;
+                    carry =0;
+                };
             }
             start++;
             end--;
@@ -112,26 +174,28 @@ void FindParentNumbers(int size,int start,int end){
             return;
         }
         else{
+            newNum[100000] = -1;
             return;
         }
     }
     else if(start == end){
         if (bitInput[start] % 2 == 1){
-            return;
+            printf("0");
+            exit(0);
         }
         if(carry == 0){
-            newNum[start] = **(pointerToInt + 4);
+            newNum[start] = *(pointerToInt + 4);
             return;
         }
         else{
-            newNum[start] = **(pointerToInt + 2);
+            newNum[start] = *(pointerToInt + 2);
+            return;
         }
     }
     else{
         return;
     }
 }
-
 
 //reverse an int
 int ReverseInt(int i){
