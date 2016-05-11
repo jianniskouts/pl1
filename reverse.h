@@ -121,14 +121,17 @@ void FindParentNumbers(int ,int ,int );
 
 int start,end,new_size;
 int newNum[100000],inputs[100000];
-int *pointerToInt,*bitInput;
+int *pointerToInt,bitInput[100000];
 int carry = 0;
 int flag = 0;
 void FindParentNumbers(int size,int start,int end){
     pointerToInt = Numbers[bitInput[end]];
     printf("here\n");
-    printf("pointerToInt: %d \n",*(pointerToInt + 0));
+    printf("end: %d\n",end);
+    printf("bitinput: %d\n",bitInput[end]);
+    printf("pointerToInt: %d \n",*(pointerToInt));
     printf("fresh: start: %d, end: %d\n",start, end);
+
     if(start < end){
         flag++; //seperate first and the rest recersive calls of the function
         //pointerToInt = Numbers[bitInput[end]];
@@ -157,7 +160,11 @@ void FindParentNumbers(int size,int start,int end){
                 newNum[start] = *(pointerToInt + 2) ;
                 newNum[end] = *(pointerToInt + 3);
                 carry = 0;
-                bitInput[end-1]--;
+                if(bitInput[end-1] == 0){
+                    bitInput[end-1] = 9;
+                }else{
+                    bitInput[end-1]--;
+                };
                 start++;
                 end--;
                 printf("call from 3\n");
@@ -170,7 +177,8 @@ void FindParentNumbers(int size,int start,int end){
                 printf("doesn't have carry\n");
             }
         }
-        if(bitInput[start]-1 == bitInput[end]){
+        printf("carry = %d\n",carry);
+        if((bitInput[start]-1 == bitInput[end]) || (bitInput[start] == 0)){
             printf("2nd case\n");
             //bitInput[start]%2 == 1;
             if(carry == 1){
@@ -178,7 +186,11 @@ void FindParentNumbers(int size,int start,int end){
                 printf("first: %d\n",*(pointerToInt + 2));
                 newNum[end] = *(pointerToInt + 3); // TODO need to find how to point to the array of arrays
                 printf("second: %d\n",*(pointerToInt + 3));
-                bitInput[end-1]--;
+                if(bitInput[end-1] == 0){
+                    bitInput[end-1] = 9;
+                }else{
+                    bitInput[end-1]--;
+                };
             }
             if (carry == 0){
                 printf("pointer: %d \n",*pointerToInt);
@@ -219,6 +231,7 @@ void FindParentNumbers(int size,int start,int end){
             return;
         }
         else{
+            printf("here?\n");
             return;
         }
     }

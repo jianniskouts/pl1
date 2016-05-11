@@ -11,12 +11,17 @@ int *FindParentNumbers(int ,int ,int ,int );*/
 
 
 int main(int argc,char* argv[]){
-    int start, end, size,i,n;
-    char c;
+    int start, end, size,i = 0;
+    int n;
+
     //int input;
     printf("yolo\n");
-    for(i = 0; i < 100000; i++){
-        printf("%d\n",argv[1][i]-'0');
+    while(argv[1][i] != '\0'){
+        //printf("yolo\n");
+        printf("%d ",argv[1][i] - '0');
+        bitInput[i] = argv[1][i] - '0';
+        //printf("BitInput: %d\n",bitInput[i]);
+        i++;
     }
     size = i;
     //size = SizeOfInt(input);
